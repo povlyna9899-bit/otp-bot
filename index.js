@@ -6,7 +6,6 @@ app.use(express.json());
 
 let otpStore = {};
 
-// ⚠️ ល្អបំផុតកុំដាក់ token ត្រង់ៗ
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 
@@ -35,6 +34,7 @@ OTP: ${otp}
     });
 
     res.json({ success: true });
+
   } catch (err) {
     console.log(err.response?.data || err.message);
     res.status(500).json({ success: false });
