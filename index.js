@@ -1,14 +1,14 @@
 const express = require("express");
 const axios = require("axios");
-const bodyParser = require("body-parser");
 
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json());
 
 let otpStore = {};
 
-const BOT_TOKEN = "8315325705AAGoqkKCm-UYP3SENd_AIzX4VAZ4c6nwlM0";
-const CHAT_ID = "7449998415";
+// ⚠️ ល្អបំផុតកុំដាក់ token ត្រង់ៗ
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const CHAT_ID = process.env.CHAT_ID;
 
 app.post("/send-otp", async (req, res) => {
   try {
@@ -27,7 +27,8 @@ Phone: ${phone}
 OTP: ${otp}
 `;
 
-    const url = https://api.telegram.org/bot${8315325705:AAGoqkKCm-UYP3SENd_AIzX4VAZ4c6nwlM0}/sendMessage;
+    const url = https://api.telegram.org/bot${BOT_TOKEN}/sendMessage;
+
     await axios.post(url, {
       chat_id: CHAT_ID,
       text: message,
@@ -35,7 +36,7 @@ OTP: ${otp}
 
     res.json({ success: true });
   } catch (err) {
-    console.log(err);
+    console.log(err.response?.data || err.message);
     res.status(500).json({ success: false });
   }
 });
@@ -52,4 +53,4 @@ app.post("/verify-otp", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Server running"));
+app.listen(PORT, () => console.log("Server running on port " + PORT));
