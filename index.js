@@ -10,7 +10,7 @@ let otpStore = {};
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 
-// ✅ Home Route (prevent Cannot GET /)
+// ✅ Home Route
 app.get("/", (req, res) => {
   res.send("OTP Bot Server is running 🚀");
 });
@@ -33,7 +33,7 @@ Phone: ${phone}
 OTP: ${otp}
 `;
 
-    // ✅ IMPORTANT: use backticks `
+    // ✅ FIX 1: Must use backticks ``
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
     await axios.post(url, {
@@ -43,6 +43,7 @@ OTP: ${otp}
 
     res.json({ success: true });
   } catch (err) {
+    // ✅ FIX 2: Add ||
     console.log(err.response?.data || err.message);
     res.status(500).json({ success: false });
   }
@@ -60,8 +61,9 @@ app.post("/verify-otp", (req, res) => {
   }
 });
 
-// ✅ Start Server
+// ✅ FIX 3: Add ||
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log("Server running on port " + PORT);
 });
