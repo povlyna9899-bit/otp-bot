@@ -1,56 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Phone Login</title>
-<style>
-body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#ff416c,#ff4b2b);
-    font-family:Arial;
-}
-.card{
-    background:white;
-    padding:40px;
-    border-radius:20px;
-    width:320px;
-    text-align:center;
-}
-input{
-    width:100%;
-    padding:12px;
-    margin:10px 0;
-    border-radius:10px;
-    border:1px solid #ccc;
-}
-button{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#ff416c;
-    color:white;
-    cursor:pointer;
-}
-</style>
+  <title>Login</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style-login.css">
 </head>
 <body>
 
-<div class="card">
-<h2>📱 Phone Login</h2>
+<div class="box">
+  <h2>Login System</h2>
 
-<input type="text" id="phone" placeholder="Enter phone (8-9 digits)">
-<input type="text" id="otp" placeholder="Enter OTP">
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
 
-<button onclick="sendOTP()">Send OTP</button>
-<button onclick="verifyOTP()">Verify</button>
-
+  <button onclick="register()">Register</button>
+  <button onclick="login()">Login</button>
 </div>
 
-<script src="app.js"></script>
+<script>
+async function register() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch("/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
+
+  const data = await res.json();
+  alert(data.success ? "Registered!" : data.message);
+}
+
+async function login() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch("/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    window.location.href = "game.html";
+  } else {
+    alert("Login failed!");
+  }
+}
+</script>
+
 </body>
 </html>
